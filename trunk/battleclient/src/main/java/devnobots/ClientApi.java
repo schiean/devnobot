@@ -67,12 +67,14 @@ public class ClientApi {
 	 * Call this once to create your player
 	 * @param name
 	 * @param webcolor
+	 * @param id		something like asd54tygasd45rtfgads5
 	 * @return
 	 */
-	public boolean createPlayer(final String name, final String webcolor){
+	public boolean createPlayer(final String name, final String webcolor, final String id){
 		GamePlayer player = new GamePlayer();
 		player.setColor(webcolor);
 		player.setName(name);		
+		player.setId(id); // to prevent others from accidentally stealing your bot
 		ClientResponse response = service.path("players").type(MediaType.APPLICATION_JSON).post(ClientResponse.class, player);
 		return response.getStatus() == 204;
 	}

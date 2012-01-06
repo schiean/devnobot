@@ -20,26 +20,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class GamePlayer {
 
+	private String id; // fill this as your unique identifier (preventing others to accidentally use your player)
 	private String name;
-	private Integer code;
 	private int kills;
 	private int deads;
 	private String color;
 	
+	
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(final String id) {
+		this.id = id;
+	}
 	public String getName() {
 		return name;
 	}
 	public void setName(final String name) {
 		this.name = name;
-	}
-	public Integer getCode() {
-		return code;
-	}
-	
-	public void setCode(final Integer code) {
-		this.code = code;
-	}
-	
+	}	
 	public void setKills(final int kills) {
 		this.kills = kills;
 	}
@@ -61,7 +61,7 @@ public class GamePlayer {
 	
 	@Override
 	public String toString() {
-		return "GamePlayer [name=" + name + ", code=" + code + ", kills=" + kills
+		return "GamePlayer [name=" + name + ", kills=" + kills
 				+ ", deads=" + deads + "]";
 	}
 	

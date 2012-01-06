@@ -18,6 +18,8 @@ import java.awt.Color;
 import java.util.Random;
 
 import rest.service.types.Action;
+import rest.service.types.GameBot;
+import rest.service.types.World;
 
 
 public class DummyExampleBot implements Runnable{
@@ -28,7 +30,7 @@ public class DummyExampleBot implements Runnable{
 	private final String color;
 
 	public DummyExampleBot(final String host,final String name, final String color){
-		this.api = new ClientApi(host, false);
+		this.api = new ClientApi(host, true);
 		this.name = name;
 		this.color = color;
 		System.out.println("name:"+name+" color:"+color+" ("+Color.decode(color).toString()+")");
@@ -37,16 +39,22 @@ public class DummyExampleBot implements Runnable{
 	@Override
 	public void run(){
 		api.readLevel();
-		api.createPlayer(name, color);
+		
+		String id = name+" our really secret id";
+		
+		api.createPlayer(name, color, id);
 		api.readPlayers();
 		
 		while(true){
 			Action action = Action.values()[randomGenerator.nextInt(Action.values().length)];
-			api.addAction(action, name);
-			//api.readWorldStatus();
-		
+			api.addAction(action, id);
+			World w = api.readWorldStatus();
+			for(GameBot bot: w.getBots()){
+				System.out.println(bot.getPlayer()+" "+bot.getLastKnownOrientation());
+			}
+			
 			try {
-				Thread.sleep(100);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}			
