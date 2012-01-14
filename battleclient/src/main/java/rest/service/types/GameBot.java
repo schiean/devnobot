@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class GameBot extends GameObject {
 	
 	private int distancePerStep;
-	private double speed; // pixel per msec
+	private int actionDurationInMs; 
 	private String player;
 	private Orientation lastKnownOrientation;
 	
@@ -29,44 +29,33 @@ public class GameBot extends GameObject {
 	public Orientation getLastKnownOrientation() {
 		return lastKnownOrientation;
 	}
-
 	public void setLastKnownOrientation(final Orientation lastKnownOrientation) {
 		this.lastKnownOrientation = lastKnownOrientation;
 	}
-
 	public int getDistancePerStep() {
 		return distancePerStep;
-	}
-	
+	}	
 	public void setDistancePerStep(final int distancePerStep) {
 		this.distancePerStep = distancePerStep;
-	}
-	
-	public double getSpeed() {
-		return speed;
-	}
-	
-	public void setSpeed(final double speed) {
-		this.speed = speed;
-	}
+	}	
 	public String getPlayer() {
 		return player;
 	}
 	public void setPlayer(final String player) {
 		this.player = player;
 	}
+	public int getActionDurationInMs() {
+		return actionDurationInMs;
+	}
+	public void setActionDurationInMs(final int actionDurationInMs) {
+		this.actionDurationInMs = actionDurationInMs;
+	}
 
 	@Override
 	public String toString() {
-		return "GameBot [getDistancePerStep()=" + getDistancePerStep()
-				+ ", getSpeed()=" + getSpeed() + ", getPlayer()=" + getPlayer()
-				+ ", getX()=" + getX() + ", getY()=" + getY() + ", getWidth()="
-				+ getWidth() + ", getHeight()=" + getHeight() + ", toString()="
-				+ super.toString() + ", getClass()=" + getClass()
-				+ ", hashCode()=" + hashCode() + "]";
-	}
-
-	
-	
-	
+		return "GameBot [distancePerStep=" + distancePerStep
+				+ ", actionDurationInMs=" + actionDurationInMs + ", player="
+				+ player + ", lastKnownOrientation=" + lastKnownOrientation
+				+ ", toString()=" + super.toString() + "]";
+	}	
 }
