@@ -223,7 +223,7 @@ public class Level {
 	private void addBlock(final int i, final int j, final String[] level) {
 		if(level[i].charAt(j)=='#'){
 			Wall w = new Wall((int)(j*charWidth), (int)(i*charHeight),(int)charWidth, (int)charHeight);
-			node.getChildren().add(w.node);
+			node.getChildren().add(w);
 			walls.add(w);
 		}
 	}

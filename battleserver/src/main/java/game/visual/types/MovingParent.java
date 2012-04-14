@@ -25,7 +25,7 @@ import javafx.animation.TranslateTransition;
 import rest.service.types.Action;
 import rest.service.types.Orientation;
 
-public abstract class MovingParent extends Parent {
+public abstract class MovingParent extends CollisionParent {
 
 	private final Object actionLock = new Object();
 	private final List<Action> actions = new LinkedList<Action>();

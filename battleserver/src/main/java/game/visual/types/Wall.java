@@ -18,7 +18,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 
-public class Wall extends Parent {
+public class Wall extends CollisionParent {
 
 	private final int x;
 	private final int y;
@@ -33,7 +33,7 @@ public class Wall extends Parent {
 		this.width = width;
 		Rectangle r = new Rectangle(x,y,length, width);
 		r.setFill(Color.BLACK);
-		this.node = r;
+		getChildren().add(r);
 	}
 	
 }

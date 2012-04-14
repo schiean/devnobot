@@ -18,17 +18,13 @@ package game.visual.types;
 
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 
-public class Parent {
+public class CollisionParent extends Parent {
 
-	protected Node node;
-	
-	public Node getVisibleNode(){
-		return node;
-	}
 	
 	public Node getCollisionNode(){
-		return node;
+		return this;
 	}
 	
 	public Bounds getCollisionBounds(){
@@ -40,7 +36,7 @@ public class Parent {
 	 * @param other != null
 	 * @return boundingparents.overlap
 	 */
-	public boolean collidesWith(final Parent other){
+	public boolean collidesWith(final CollisionParent other){
 		Bounds myBounds = this.getCollisionBounds();
 		Bounds hisBounds = other.getCollisionBounds();		
 		return this!=other && myBounds.intersects(hisBounds);
@@ -50,7 +46,7 @@ public class Parent {
 	 * @param other
 	 * @return true if the other is right of this (this is left of other)
 	 */
-	public boolean isLeftOf(final Parent other){
+	public boolean isLeftOf(final CollisionParent other){
 		Bounds myBounds = this.getCollisionBounds();
 		Bounds hisBounds = other.getCollisionBounds();
 		return myBounds.getMinX() <= hisBounds.getMinX();
@@ -60,7 +56,7 @@ public class Parent {
 	 * @param other
 	 * @return true if the other is below this (this is above other)
 	 */
-	public boolean isAbove(final Parent other){
+	public boolean isAbove(final CollisionParent other){
 		Bounds myBounds = this.getCollisionBounds();
 		Bounds hisBounds = other.getCollisionBounds();
 		return myBounds.getMinY() <= hisBounds.getMinY();		

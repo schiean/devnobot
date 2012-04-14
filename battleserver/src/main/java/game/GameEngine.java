@@ -44,14 +44,14 @@ public class GameEngine extends Application implements FireCallback{
 	
 	public static GameEngine instance;
 	
-	private final boolean lastManStanding = true;
+	private final boolean lastManStanding = false;
 	
 	private final ReadWriteLock lock = new ReentrantReadWriteLock(); 
 	private final Group root = new Group();
 	private final Map<String, Player> id2Player = new HashMap<String,Player>();
 	private final Map<Player, Tank> players = new HashMap<Player,Tank>();
-	private final Map<Node, Tank> tanks = new HashMap<Node, Tank>();
-	private final Map<Node, Bullet> bullets = new HashMap<Node, Bullet>();
+	private final Set<Tank> tanks = new HashSet<Tank>();
+	private final Set<Bullet> bullets = new HashSet<Bullet>();
 	private final Random randomGenerator = new Random();
 	private final AudioClip explosionSound = null;// new AudioClip("http://soundbible.com/grab.php?id=1919&type=wav"); //URL string from which to load the audio clip. This can be an HTTP, file or jar source.
 	
@@ -142,10 +142,10 @@ public class GameEngine extends Application implements FireCallback{
 					}
 					lock.writeLock().lock();
 					try{	
-						for (Tank t : tanks.values()) {
+						for (Tank t : tanks) {
 							t.tick();
 						}
-						for (Bullet b : bullets.values()) {
+						for (Bullet b : bullets) {
 							b.tick();
 						}
 						uglyCollisionDetection();
@@ -159,8 +159,8 @@ public class GameEngine extends Application implements FireCallback{
 	
 
 	private void uglyCollisionDetection() {
-		for (Bullet bullet : new LinkedList<Bullet>(bullets.values())) {
-			for (Tank tank : new LinkedList<Tank>(tanks.values())) {
+		for (Bullet bullet : new LinkedList<Bullet>(bullets)) {
+			for (Tank tank : new LinkedList<Tank>(tanks)) {
 				if (bullet.collidesWith(tank)) {
 					if (bullet.getOwner() != tank) {
 						System.out.println(tank + " got hit by " + bullet.getOwner());
@@ -171,8 +171,8 @@ public class GameEngine extends Application implements FireCallback{
 				}
 			}
 		}
-		for (Tank tank1 : new LinkedList<Tank>(tanks.values())) {
-			for (Tank tank2 : new LinkedList<Tank>(tanks.values())) {
+		for (Tank tank1 : new LinkedList<Tank>(tanks)) {
+			for (Tank tank2 : new LinkedList<Tank>(tanks)) {
 				if (tank1.collidesWith(tank2)) {
 					if (tank1.isMoving()) {
 						tank1.stop();
@@ -184,7 +184,7 @@ public class GameEngine extends Application implements FireCallback{
 			}
 		}
 		
-		for (Tank tank1 : new LinkedList<Tank>(tanks.values())) {
+		for (Tank tank1 : new LinkedList<Tank>(tanks)) {
 			if (tank1.isMoving()) {
 				for (Wall wall : lvl.walls) {
 					if(tank1.collidesWith(wall)){
@@ -198,7 +198,7 @@ public class GameEngine extends Application implements FireCallback{
 
 			}
 		}
-		for (Bullet bullet : new LinkedList<Bullet>(bullets.values())) {
+		for (Bullet bullet : new LinkedList<Bullet>(bullets)) {
 			for (Wall wall : lvl.walls) {
 				if (bullet.collidesWith(wall)) {
 					removeBullet(bullet);
@@ -241,7 +241,7 @@ public class GameEngine extends Application implements FireCallback{
 				throw new RuntimeException("HHHHHHHHUHUHUH");
 			}
 			newTank = createTankAt(player, x, y);
-			for (Tank other : new LinkedList<Tank>(tanks.values())) {
+			for (Tank other : new LinkedList<Tank>(tanks)) {
 				if (other.collidesWith(newTank)) {
 					ok = false;
 					break;
@@ -264,34 +264,34 @@ public class GameEngine extends Application implements FireCallback{
 	}
 
 	private void removeBullet(final Bullet b) {
-		bullets.remove(b.getVisibleNode());
+		bullets.remove(b);
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
 				b.stop();
-				root.getChildren().remove(b.getVisibleNode());
+				root.getChildren().remove(b);
 			}
 		});
 	}
 
 	private void removeTank(final Tank t) {
-		tanks.remove(t.getVisibleNode());
+		tanks.remove(t);
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
 				t.stop();
-				root.getChildren().remove(t.getVisibleNode());
+				root.getChildren().remove(t);
 			}
 		});
 	}
 
 	private Tank createTankAt(final Player p, final int x, final int y) {
 		final Tank t = new Tank(p, x, y, 0, preferedStepSize, this);
-		tanks.put(t.getVisibleNode(), t);
+		tanks.add(t);
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				root.getChildren().add(t.getVisibleNode());
+				root.getChildren().add(t);
 			}
 		});
 		return t;
@@ -299,12 +299,12 @@ public class GameEngine extends Application implements FireCallback{
 
 	private Bullet createBullet(final Tank t) {
 		final Bullet b = new Bullet(t, (int) t.getMiddleX(), (int) t.getMiddleY(), (int) t.getRadius());
-		bullets.put(b.getVisibleNode(), b);
+		bullets.add(b);
 
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				root.getChildren().add(b.getVisibleNode());
+				root.getChildren().add(b);
 			}
 		});
 
@@ -313,26 +313,19 @@ public class GameEngine extends Application implements FireCallback{
 	}
 
 	
-	public Set<Node> getTankNodes(){
+	public Set<Tank> getTankNodes(){
 		lock.readLock().lock();
 		try{
-			return new HashSet<Node>(tanks.keySet());
+			return new HashSet<Tank>(tanks);
 		}finally{
 			lock.readLock().unlock();
 		}
 	}
-	public Tank getTankForNode(final Node n){
+	
+	public Set<Bullet> getBulletNodes(){
 		lock.readLock().lock();
 		try{
-			return tanks.get(n);
-		}finally{
-			lock.readLock().unlock();
-		}
-	}
-	public Set<Node> getBulletNodes(){
-		lock.readLock().lock();
-		try{
-			return new HashSet<Node>(bullets.keySet());
+			return new HashSet<Bullet>(bullets);
 		}finally{
 			lock.readLock().unlock();
 		}
