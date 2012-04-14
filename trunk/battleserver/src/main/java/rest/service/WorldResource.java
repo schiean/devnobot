@@ -43,8 +43,7 @@ public class WorldResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public World getWorld() {
 		World world = new World();
-		for (Node n : GameEngine.instance.getTankNodes()) {
-			Tank t = GameEngine.instance.getTankForNode(n);
+		for (Tank t : GameEngine.instance.getTankNodes()) {
 			world.getBots().add(mapper.createBot(t));
 		}
 		for (Node n : GameEngine.instance.getBulletNodes()) {

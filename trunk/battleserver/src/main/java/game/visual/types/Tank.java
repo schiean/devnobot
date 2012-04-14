@@ -40,8 +40,8 @@ import rest.service.types.Action;
 
 public class Tank extends MovingParent {
 
-	private final static double actionDuration = 5.0; //1500
-	private final static double fireDuration = 1; // actionDuration * 2 -500;
+	private final static double actionDuration = 1500;
+	private final static double fireDuration =  actionDuration * 2 -500;
 
 	private final Player player;
 	private final FireCallback callback;
@@ -57,14 +57,15 @@ public class Tank extends MovingParent {
 		Text t = new Text(x, y+50, player.toString());
 		t.textProperty().bind(player.getPlayerProperty());
 		this.tank = tank(x, y, r, player.getColor());
-		this.node = new Group(t, tank);
+		this.getChildren().add(t);
+		this.getChildren().add(tank);
 			
 		this.callback = callback;
 		this.stepSize = stepSize;
 		
 		right = TranslateTransitionBuilder.create()
 				.duration(new Duration(actionDuration))
-				.node(getVisibleNode())
+				.node(this)
 				.byX(stepSize)
 				.interpolator(Interpolator.LINEAR)
 				.cycleCount(1)
@@ -72,21 +73,21 @@ public class Tank extends MovingParent {
 
 		left = TranslateTransitionBuilder.create()
 				.duration(new Duration(actionDuration))
-				.node(getVisibleNode())
+				.node(this)
 				.byX(-stepSize)
 				.interpolator(Interpolator.LINEAR)
 				.cycleCount(1)
 				.build();
 		up = TranslateTransitionBuilder.create()
 				.duration(new Duration(actionDuration))
-				.node(getVisibleNode())
+				.node(this)
 				.byY(-stepSize)
 				.interpolator(Interpolator.LINEAR)
 				.cycleCount(1)
 				.build();
 		down = TranslateTransitionBuilder.create()
 				.duration(new Duration(actionDuration))
-				.node(getVisibleNode())
+				.node(this)
 				.byY(stepSize)
 				.interpolator(Interpolator.LINEAR)
 				.cycleCount(1)
@@ -95,7 +96,7 @@ public class Tank extends MovingParent {
 		// fire is not really a action on tank but a new object(bullet) so we use a standing still of 1.5s
 		fire = TranslateTransitionBuilder.create()
 				.duration(new Duration(fireDuration))
-				.node(getVisibleNode())
+				.node(this)
 				.byX(0)
 				.interpolator(Interpolator.LINEAR)
 				.cycleCount(1)
@@ -104,13 +105,13 @@ public class Tank extends MovingParent {
 		
 		turn_right = RotateTransitionBuilder.create()
 				.duration(new Duration(actionDuration))
-				.node(getVisibleNode())
+				.node(this)
 				.byAngle(90)
 				.build();
 
 		turn_left = RotateTransitionBuilder.create()
 				.duration(new Duration(actionDuration))
-				.node(getVisibleNode())
+				.node(this)
 				.byAngle(-90)
 				.build();		
 		
@@ -121,11 +122,11 @@ public class Tank extends MovingParent {
 	 * @param other (or null)
 	 * @return
 	 */
-	public boolean shouldStopMovingOnCollisionWith(final Parent other) {
+	public boolean shouldStopMovingOnCollisionWith(final CollisionParent other) {
 		return !movingAwayFromCollision(other);		       
 	}
 	
-	private boolean movingAwayFromCollision(final Parent other) {
+	private boolean movingAwayFromCollision(final CollisionParent other) {
 		if(other == null){
 			return true; // null means its ok
 		}
@@ -267,7 +268,7 @@ public class Tank extends MovingParent {
 				Bounds bounds = tank.getBoundsInParent();				
 				System.out.println(event.getSceneX() + " " + event.getSceneY());
 				System.out.println(bounds.getHeight() + " "+ bounds.getWidth() + " "+ bounds.getMinX() + " "+bounds.getMinY());
-				System.out.println(tank.getLayoutX() +" "+tank.getTranslateX() +" "+tank.localToScene(node.getBoundsInLocal()) );
+				System.out.println(tank.getLayoutX() +" "+tank.getTranslateX() +" "+tank.localToScene(getBoundsInLocal()) );
 			}
 		});
 		

@@ -31,12 +31,12 @@ public class Bullet extends MovingParent {
 		super();
 		this.owner = owner;
 		this.angle = r;
-		this.node =  bullet(x,y);
+		this.getChildren().add(bullet(x,y));
 		
 		double actionTime = 5000.0;
 		right = TranslateTransitionBuilder.create()
           .duration(new Duration(actionTime))
-          .node(node)
+          .node(this)
           .byX(1500)
           .interpolator(Interpolator.LINEAR)
           .cycleCount(1)
@@ -44,7 +44,7 @@ public class Bullet extends MovingParent {
         
 		left = TranslateTransitionBuilder.create()
         .duration(new Duration(actionTime))
-        .node(node)
+        .node(this)
         .byX(-1500)
         .interpolator(Interpolator.LINEAR)
         .cycleCount(1)
@@ -52,7 +52,7 @@ public class Bullet extends MovingParent {
 		
 		up = TranslateTransitionBuilder.create()
         .duration(new Duration(actionTime))
-        .node(node)
+        .node(this)
         .byY(-1500)
         .interpolator(Interpolator.LINEAR)
         .cycleCount(1)
@@ -60,20 +60,20 @@ public class Bullet extends MovingParent {
 		
 		down = TranslateTransitionBuilder.create()
         .duration(new Duration(actionTime))
-        .node(node)
+        .node(this)
         .byY(1500)
         .interpolator(Interpolator.LINEAR)
         .cycleCount(1)
       .build();      
      }
-	
-	public double getX() {
-		return node.getBoundsInParent().getMinY();
-	}
-
-	public double getY() {
-		return node.getBoundsInParent().getMinY();
-	}
+//	
+//	public double getX() {
+//		return getBoundsInParent().getMinY();
+//	}
+//
+//	public double getY() {
+//		return getBoundsInParent().getMinY();
+//	}
 	
 	private Node bullet(final int x, final int y) {
 		Circle c = new Circle(x, y, 2);
