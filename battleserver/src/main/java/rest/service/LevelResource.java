@@ -41,15 +41,24 @@ public class LevelResource {
 	private Request request;
 
 	private final Mapper mapper = new Mapper();
-
+	
+	private static Cache<List<GameObstacle>> lvlCache = new Cache<List<GameObstacle>>(60000); 
+	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<GameObstacle> getLevel() {
-		List<GameObstacle> objs = new ArrayList<GameObstacle>();
-		for (Node n : GameEngine.instance.getWallNodes()) {
-			objs.add(mapper.createObstacle(n.getBoundsInParent()));
+		synchronized (lvlCache) {
+			if(lvlCache.needsUpdate()){
+				List<GameObstacle> objs = new ArrayList<GameObstacle>();
+				for (Node n : GameEngine.instance.getWallNodes()) {
+					objs.add(mapper.createObstacle(n.getBoundsInParent()));
+				}		
+				lvlCache.set(objs);
+			}
+			return lvlCache.get();
+			
 		}
-		return objs;
+		
 	}
 
 }

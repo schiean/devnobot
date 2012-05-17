@@ -47,6 +47,8 @@ public class PlayersResource {
 	
 	private final Mapper mapper = new Mapper();
 	
+	private static Cache<List<GamePlayer>> playerCache = new Cache<List<GamePlayer>>(500); 	
+	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -59,11 +61,16 @@ public class PlayersResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<GamePlayer> getPlayers(){
-		List<GamePlayer> players = new ArrayList<GamePlayer>();
-		for(Player p :GameEngine.instance.getPlayers()){
-			players.add(mapper.createPlayer(p));
-		}
-		return players;
+		synchronized (playerCache) {
+			if(playerCache.needsUpdate()){
+				List<GamePlayer> players = new ArrayList<GamePlayer>();
+				for(Player p :GameEngine.instance.getPlayers()){
+					players.add(mapper.createPlayer(p));
+				}
+				playerCache.set(players);
+			}
+			return playerCache.get();
+		}		
 	}
 	
 
