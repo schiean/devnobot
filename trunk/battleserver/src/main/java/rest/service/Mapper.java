@@ -39,10 +39,9 @@ public class Mapper {
 		bot.setActionDurationInMs(t.getActionduration());
 		bot.setDistancePerStep(t.getStepSize());
 		bot.setPlayer(t.getPlayer().getName());
+		bot.setQueueLength(t.getActionQueueSize());
 		return bot;
 	}
-	
-
 
 	public GamePlayer createPlayer(final Player p) {
 		GamePlayer player = new GamePlayer();

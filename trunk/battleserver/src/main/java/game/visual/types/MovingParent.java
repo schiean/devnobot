@@ -84,6 +84,9 @@ public abstract class MovingParent extends CollisionParent {
 		}
 	}
 
+	public int getActionQueueSize(){
+		return actions.size();
+	}
 	
 	
 	protected Transition getForAngle(double angle){
