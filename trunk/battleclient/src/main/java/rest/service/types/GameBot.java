@@ -24,7 +24,7 @@ public class GameBot extends GameObject {
 	private int actionDurationInMs; 
 	private String player;
 	private Orientation lastKnownOrientation;
-	
+	private int queueLength; // the number of items left in your action queue
 	
 	public Orientation getLastKnownOrientation() {
 		return lastKnownOrientation;
@@ -51,6 +51,13 @@ public class GameBot extends GameObject {
 		this.actionDurationInMs = actionDurationInMs;
 	}
 
+	public int getQueueLength() {
+		return queueLength;
+	}
+	public void setQueueLength(final int queueLength) {
+		this.queueLength = queueLength;
+	}
+	
 	@Override
 	public String toString() {
 		return "GameBot [distancePerStep=" + distancePerStep
