@@ -39,16 +39,25 @@ public class WorldResource {
 	
 	private final Mapper mapper = new Mapper();
 
+	private static Cache<World> worldCache = new Cache<World>(500); 
+	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public World getWorld() {
-		World world = new World();
-		for (Tank t : GameEngine.instance.getTankNodes()) {
-			world.getBots().add(mapper.createBot(t));
+		synchronized (worldCache) {
+			
+			if(worldCache.needsUpdate()){
+				World world = new World();
+				for (Tank t : GameEngine.instance.getTankNodes()) {
+					world.getBots().add(mapper.createBot(t));
+				}
+				for (Node n : GameEngine.instance.getBulletNodes()) {
+					world.getBullets().add(mapper.createBullet(n.getBoundsInParent()));
+				}
+				worldCache.set(world);
+			}
+			return worldCache.get();
+
 		}
-		for (Node n : GameEngine.instance.getBulletNodes()) {
-			world.getBullets().add(mapper.createBullet(n.getBoundsInParent()));
-		}
-		return world;
 	}
 }
