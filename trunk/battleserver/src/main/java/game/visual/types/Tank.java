@@ -23,6 +23,7 @@ import javafx.animation.TranslateTransition;
 import javafx.animation.TranslateTransitionBuilder;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
+import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
@@ -272,6 +273,8 @@ public class Tank extends MovingParent {
 			}
 		});
 		
+		tank.setCache(true);
+		tank.setCacheHint(CacheHint.SPEED);
 		return tank;
 	}
 	
