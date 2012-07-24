@@ -27,7 +27,7 @@ import rest.service.types.GamePlayer;
 public class Mapper {
 	
 	public GameBullet createBullet(final Bounds n) {
-		GameBullet bullet =new GameBullet();
+		GameBullet bullet = new GameBullet();
 		create(bullet, n);
 		return bullet;
 	}

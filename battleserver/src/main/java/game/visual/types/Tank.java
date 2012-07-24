@@ -16,6 +16,7 @@
 package game.visual.types;
 
 import game.FireCallback;
+import game.TankOperatorCallback;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.animation.RotateTransitionBuilder;
@@ -41,9 +42,10 @@ import rest.service.types.Action;
 
 public class Tank extends MovingParent {
 
-	private final static double actionDuration = 1500;
+	private final static double actionDuration = 600;//1500;
 	private final static double fireDuration =  actionDuration * 2 -500;
 
+	private final TankOperatorCallback operator; 
 	private final Player player;
 	private final FireCallback callback;
 	private final int stepSize;
@@ -53,8 +55,9 @@ public class Tank extends MovingParent {
 	protected RotateTransition turn_left = new RotateTransition();
 	protected RotateTransition turn_right = new RotateTransition();
 	
-	public Tank(final Player player, final int x, final int y, final int r,final int stepSize, final FireCallback callback) {
+	public Tank(final Player player, final int x, final int y, final int r,final int stepSize, final FireCallback callback, final TankOperatorCallback operator) {
 		this.player = player;
+		this.operator = operator;
 		Text t = new Text(x, y+50, player.toString());
 		t.textProperty().bind(player.getPlayerProperty());
 		this.tank = tank(x, y, r, player.getColor());
@@ -108,6 +111,7 @@ public class Tank extends MovingParent {
 				.duration(new Duration(actionDuration))
 				.node(this)
 				.byAngle(90)
+				
 				.build();
 
 		turn_left = RotateTransitionBuilder.create()
@@ -270,6 +274,9 @@ public class Tank extends MovingParent {
 				System.out.println(event.getSceneX() + " " + event.getSceneY());
 				System.out.println(bounds.getHeight() + " "+ bounds.getWidth() + " "+ bounds.getMinX() + " "+bounds.getMinY());
 				System.out.println(tank.getLayoutX() +" "+tank.getTranslateX() +" "+tank.localToScene(getBoundsInLocal()) );
+				if(event.isControlDown()){
+					operator.interupt(player);
+				}
 			}
 		});
 		
