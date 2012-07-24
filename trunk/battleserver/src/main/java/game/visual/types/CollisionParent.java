@@ -36,11 +36,13 @@ public class CollisionParent extends Parent {
 	 * @param other != null
 	 * @return boundingparents.overlap
 	 */
+	// TODO kunnen we hier niet een lijst meegeven, dat is goedkoper
 	public boolean collidesWith(final CollisionParent other){
 		Bounds myBounds = this.getCollisionBounds();
 		Bounds hisBounds = other.getCollisionBounds();		
 		return this!=other && myBounds.intersects(hisBounds);
 	}
+	
 	
 	/** 
 	 * @param other

@@ -30,17 +30,23 @@ import java.util.Set;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.TimelineBuilder;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import rest.service.types.Action;
 
 
-public class GameEngine extends Application implements FireCallback{
+public class GameEngine extends Application implements FireCallback, TankOperatorCallback{
 	
 	public static GameEngine instance;
 	
@@ -120,42 +126,75 @@ public class GameEngine extends Application implements FireCallback{
 		primaryStage.setScene(new Scene(root, w, h-10));
 		primaryStage.show();
 
-		lvl = new Level(w, h, 0);
+		lvl = new Level(w, h, 1);
 		
 		preferedStepSize = lvl.getCharHeight();
 		
 		root.getChildren().add(lvl.node);
 
-		uglyGameLoop();
+		uglyGameLoop2();
 
 	}
 
+	// TODO should be a timeline (executed on jfx, at least the collision detection
 	private void uglyGameLoop() {
-		new Thread() {
-			@Override
-			public void run() {
-				while (true) {
-					try {
-						Thread.sleep(50);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					lock.writeLock().lock();
-					try{	
-						for (Tank t : tanks) {
-							t.tick();
-						}
-						for (Bullet b : bullets) {
-							b.tick();
-						}
-						uglyCollisionDetection();
-					}finally{
-						lock.writeLock().unlock();
-					}
-				}
-			}
-		}.start();
+//		new Thread() {
+//			@Override
+//			public void run() {
+//				while (true) {
+//					try {
+//						Thread.sleep(50);
+//					} catch (InterruptedException e) {
+//						e.printStackTrace();
+//					}
+//					lock.writeLock().lock();
+//					try{	
+//						for (Tank t : tanks) {
+//							t.tick();
+//						}
+//						for (Bullet b : bullets) {
+//							b.tick();
+//						}
+//						uglyCollisionDetection();
+//					}finally{
+//						lock.writeLock().unlock();
+//					}
+//				}
+//			}
+//		}.start();
 	}
+	
+	private void uglyGameLoop2() {
+		final Duration oneFrameAmt = Duration.millis(1000/60);
+		final KeyFrame oneFrame = new KeyFrame(oneFrameAmt,
+				new EventHandler() {
+		
+		
+		@Override
+		public void handle(final Event arg0) {
+			lock.writeLock().lock();
+			try{	
+				for (Tank t : tanks) {
+					t.tick();
+				}
+				for (Bullet b : bullets) {
+					b.tick();
+				}
+				uglyCollisionDetection();
+			}finally{
+				lock.writeLock().unlock();
+			}
+			
+		}
+		}); // oneFrame
+
+		TimelineBuilder.create()
+		   .cycleCount(Animation.INDEFINITE)
+		   .keyFrames(oneFrame)
+		   .build()
+		   .play();
+	}
+
 	
 
 	private void uglyCollisionDetection() {
@@ -207,7 +246,10 @@ public class GameEngine extends Application implements FireCallback{
 		}
 	}
 	
-	
+	@Override
+	public void interupt(final Player p) {
+		killAndRespawn(p);	
+	}
 
 	public void killAndRespawn(final Player p) {
 		Tank t = players.get(p);
@@ -227,7 +269,7 @@ public class GameEngine extends Application implements FireCallback{
 		}
 	}
 
-	
+	// TODO should be on fx thread
 	private Tank createTank(final Player player) {
 		Tank newTank = null;
 		// find free spot
@@ -286,7 +328,7 @@ public class GameEngine extends Application implements FireCallback{
 	}
 
 	private Tank createTankAt(final Player p, final int x, final int y) {
-		final Tank t = new Tank(p, x, y, 0, preferedStepSize, this);
+		final Tank t = new Tank(p, x, y, 0, preferedStepSize, this, this);
 		tanks.add(t);
 		Platform.runLater(new Runnable() {
 			@Override
@@ -346,4 +388,6 @@ public class GameEngine extends Application implements FireCallback{
 			lock.readLock().unlock();
 		}
 	}
+
+
 }

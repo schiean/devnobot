@@ -18,6 +18,7 @@ package game.visual.types;
 import java.util.LinkedList;
 import java.util.List;
 
+import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -218,6 +219,9 @@ public class Level {
 				addBlock(i,j,level);
 			}
 		}		
+		// TODO caching en minimaliseren gaat niet samen ?
+		node.setCache(true); 
+		node.setCacheHint(CacheHint.SPEED);
 	}
 
 	private void addBlock(final int i, final int j, final String[] level) {
