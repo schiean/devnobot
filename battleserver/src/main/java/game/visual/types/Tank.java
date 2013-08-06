@@ -37,6 +37,7 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextBoundsType;
 import javafx.util.Duration;
 import rest.service.types.Action;
 
@@ -58,8 +59,8 @@ public class Tank extends MovingParent {
 	public Tank(final Player player, final int x, final int y, final int r,final int stepSize, final FireCallback callback, final TankOperatorCallback operator) {
 		this.player = player;
 		this.operator = operator;
-		Text t = new Text(x, y+50, player.toString());
-		t.textProperty().bind(player.getPlayerProperty());
+  		Text t = new Text(x, y - 15, player.toString());
+        t.textProperty().bind(player.getPlayerProperty());                
 		this.tank = tank(x, y, r, player.getColor());
 		this.getChildren().add(t);
 		this.getChildren().add(tank);
@@ -109,14 +110,14 @@ public class Tank extends MovingParent {
 		
 		turn_right = RotateTransitionBuilder.create()
 				.duration(new Duration(actionDuration))
-				.node(this)
+				.node(tank)
 				.byAngle(90)
 				
 				.build();
 
 		turn_left = RotateTransitionBuilder.create()
 				.duration(new Duration(actionDuration))
-				.node(this)
+				.node(tank)
 				.byAngle(-90)
 				.build();		
 		

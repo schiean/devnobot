@@ -19,6 +19,8 @@ import game.GameEngine;
 import game.visual.types.Tank;
 import javafx.scene.Node;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -60,4 +62,10 @@ public class WorldResource {
 
 		}
 	}
+
+    @DELETE
+    @Consumes(MediaType.WILDCARD)
+    public void resetWorld() {
+        GameEngine.instance.reset();
+    }
 }

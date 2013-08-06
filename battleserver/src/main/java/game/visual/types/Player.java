@@ -14,69 +14,75 @@
  *  limitations under the License.
  */
 package game.visual.types;
+
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 
-
 public class Player {
-	private final String id;
-	private final String name;
-	private int kills = 0;
-	private int deads = 0;
-	private final Color color;
-	private final TextField textField = new TextField();
-	
-	public Player(final String name, final Color color, final String id) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.color = color;
+    private final String id;
+    private final String name;
+    private int kills = 0;
+    private int deads = 0;
+    private final Color color;
+    private final TextField textField = new TextField();
 
-		invalidate();
-	}
+    public Player(final String name, final Color color, final String id) {
+        super();
+        this.id = id;
+        this.name = name;
+        this.color = color;
 
-	public String getId() {
-		return id;
-	}
+        invalidate();
+    }
 
-	public int getKills(){
-		return kills;
-	}
-	
-	public int getDeads(){
-		return deads;
-	}
-	
-	public void score(){
-		kills++;
-		invalidate();
-	}
-	
-	public void die(){
-		deads++;
-		invalidate();
-	}
-	
-	public String getName(){
-		return name;
-	}
-	
-	public Color getColor(){
-		return color;
-	}
-	
-	@Override
-	public String toString() {
-		return name + " " + kills + "/" + deads;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void invalidate(){
-		textField.setText(toString());
-	}
+    public void reset() {
+        kills = 0;
+        deads = 0;
+        invalidate();
+    }
 
-	public ObservableValue<? extends String> getPlayerProperty() {
-		return textField.textProperty();
-	}	
-	
+    public int getKills() {
+        return kills;
+    }
+
+    public int getDeads() {
+        return deads;
+    }
+
+    public void score() {
+        kills++;
+        invalidate();
+    }
+
+    public void die() {
+        deads++;
+        invalidate();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    @Override
+    public String toString() {
+        return name + " " + kills + "/" + deads;
+    }
+
+    public void invalidate() {
+        textField.setText(toString());
+    }
+
+    public ObservableValue<? extends String> getPlayerProperty() {
+        return textField.textProperty();
+    }
+
 }
