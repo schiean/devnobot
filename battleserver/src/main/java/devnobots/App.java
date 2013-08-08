@@ -18,11 +18,43 @@ package devnobots;
 import game.GameEngine;
 import rest.service.GameServer;
 
-public class App 
-{
-    public static void main( final String[] args ) throws Exception
-    {   	
-    	new GameServer(7080).start();	
-    	GameEngine.main(args);	
+import java.util.logging.Logger;
+
+public class App {
+
+    private final static Logger LOG = Logger.getLogger(App.class.getName());
+
+    public static void main(final String[] args) throws Exception {
+
+        String portNumberProperty = System.getProperty("devnobot.server.portNumber");
+        String levelProperty = System.getProperty("devnobot.server.level");
+        int portNumber = 7080;
+        int level = 0;
+        if (portNumberProperty != null) {
+            try {
+                portNumber = Integer.parseInt(portNumberProperty);
+            } catch (NumberFormatException nfex) {
+                LOG.severe("Port number must be numeric, will default to 7080");
+                portNumber = 7080;
+            }
+        } else {
+            LOG.info("Using default port number 7080");
+        }
+        if (levelProperty != null) {
+            try {
+                level = Integer.parseInt(levelProperty);
+            } catch (NumberFormatException nfex) {
+                LOG.severe("Level must be numeric, will default to 0");
+                level = 0;
+            }
+            if (level > 2 || level < 0) {
+                LOG.warning("Level is not 0, 1 or 2; will default to 0");
+                level = 0;
+            }
+        } else {
+            LOG.info("Using default playing level 0");
+        }
+        new GameServer(portNumber).start();
+        GameEngine.main(args);
     }
 }

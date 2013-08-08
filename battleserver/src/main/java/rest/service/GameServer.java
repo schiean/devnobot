@@ -42,8 +42,4 @@ public class GameServer {
 		context.addServlet(sh, "/*");		 
 		server.start();
 	}
-	
-	public static void main(final String[] args) throws Exception{
-		new GameServer(7080).start();				
-	}
 }

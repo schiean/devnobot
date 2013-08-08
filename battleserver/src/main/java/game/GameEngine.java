@@ -133,13 +133,26 @@ public class GameEngine extends Application implements FireCallback, TankOperato
 
     @Override
     public void start(final Stage primaryStage) throws Exception {
+
+        String levelProperty = System.getProperty("devnobot.server.level");
+        int level = 0;
+        if (levelProperty != null) {
+            try {
+                level = Integer.parseInt(levelProperty);
+            } catch (NumberFormatException nfex) {
+                level = 0;
+            }
+        }
+        if (level > 2 || level < 0) {
+            level=0;
+        }
         primaryStage.setResizable(false);
         int w = 1024;
         int h = 768;
         primaryStage.setScene(new Scene(root, w, h - 10));
         primaryStage.show();
 
-        lvl = new Level(w, h, 2);
+        lvl = new Level(w, h, level);
 
         preferedStepSize = lvl.getCharHeight();
 
