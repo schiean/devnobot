@@ -9,6 +9,7 @@
     <modules>
         <module>battleclient</module>
         <module>battleserver</module>
+        <module>botexample</module>
     </modules>
     <properties>
         <jersey.version>1.11</jersey.version>
