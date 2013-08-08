@@ -16,6 +16,7 @@
     </modules>
     <properties>
         <jersey.version>1.11</jersey.version>
+        <maven.repo.baseurl>http://dcjava-repo.resultinfra.com:8081/nexus/content</maven.repo.baseurl>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -90,4 +91,16 @@
             </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+        <repository>
+            <id>dcjava-releases</id>
+            <name>DCJava Releases Repository</name>
+            <url>${maven.repo.baseurl}/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>dcjava-snapshots</id>
+            <name>DCJava Snapshots Repository</name>
+            <url>${maven.repo.baseurl}/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
