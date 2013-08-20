@@ -208,12 +208,6 @@ public class Tank extends MovingParent {
 	private Group tank(final int x, final int y, final int r, final Color color) {
 		final Group tank = new Group();
 
-		Line l1 = new Line(10, 0, 10, 10);
-		Line l2 = new Line(20, 0, 20, 10);
-		Line l3 = new Line(30, 0, 30, 10);
-		Line l4 = new Line(40, 0, 40, 10);
-		Line l5 = new Line(50, 0, 50, 10);
-
 		Group wtop = new Group();
 		Rectangle top = new Rectangle(0, 0, 60, 10);
 		top.setFill(Color.GRAY);

@@ -12,7 +12,6 @@
     <modules>
         <module>battleclient</module>
         <module>battleserver</module>
-        <module>botexample</module>
     </modules>
     <properties>
         <jersey.version>1.11</jersey.version>
@@ -79,6 +78,11 @@
                     <artifactId>maven-jetty-plugin</artifactId>
                     <version>6.1.18</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.codehaus.sonar</groupId>
+                    <artifactId>sonar-maven3-plugin</artifactId>
+                    <version>3.6.2</version>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -88,6 +92,10 @@
                     <source>1.7</source>
                     <target>1.7</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.sonar</groupId>
+                <artifactId>sonar-maven3-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
