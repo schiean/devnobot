@@ -58,7 +58,7 @@ public class GameEngine extends Application implements FireCallback, TankOperato
     private final Set<Tank> tanks = new HashSet<Tank>();
     private final Set<Bullet> bullets = new HashSet<Bullet>();
     private final Random randomGenerator = new Random();
-    private final AudioClip explosionSound = new AudioClip("http://soundbible.com/grab.php?id=1919&type=wav");
+    private final AudioClip explosionSound = new AudioClip(GameEngine.class.getResource("shotgun_blast.wav").toString());
 
     private Level lvl;
     private int preferedStepSize;
