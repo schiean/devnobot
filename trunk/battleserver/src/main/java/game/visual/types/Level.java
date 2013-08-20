@@ -204,8 +204,8 @@ public class Level {
 		wl = level[0].length();
 		wh = level.length;
 		System.out.println(wl+" "+wh);
-		charWidth = w/wl;
-		charHeight = h/wh;
+		charWidth = (double) w/ (double) wl;
+		charHeight = (double) h/ (double) wh;
 		
 		Stop[] stops = new Stop[] { new Stop(0, levelColors[levelNr]), new Stop(1, levelColors2[levelNr])};
 	    LinearGradient lg = new LinearGradient(0, 0, 0.5, 0, true, CycleMethod.REFLECT, stops); 

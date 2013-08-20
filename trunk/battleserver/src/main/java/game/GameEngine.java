@@ -58,8 +58,7 @@ public class GameEngine extends Application implements FireCallback, TankOperato
     private final Set<Tank> tanks = new HashSet<Tank>();
     private final Set<Bullet> bullets = new HashSet<Bullet>();
     private final Random randomGenerator = new Random();
-    private final AudioClip explosionSound = null;// new AudioClip("http://soundbible.com/grab.php?id=1919&type=wav"); //URL string
-                                                  // from which to load the audio clip. This can be an HTTP, file or jar source.
+    private final AudioClip explosionSound = new AudioClip("http://soundbible.com/grab.php?id=1919&type=wav");
 
     private Level lvl;
     private int preferedStepSize;
