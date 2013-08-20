@@ -4,5 +4,5 @@ import game.visual.types.Player;
 
 public interface TankOperatorCallback {
 
-	public void interupt(Player p);
+	public void interrupt(Player p);
 }

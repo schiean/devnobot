@@ -37,7 +37,6 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextBoundsType;
 import javafx.util.Duration;
 import rest.service.types.Action;
 
@@ -270,7 +269,7 @@ public class Tank extends MovingParent {
 				System.out.println(bounds.getHeight() + " "+ bounds.getWidth() + " "+ bounds.getMinX() + " "+bounds.getMinY());
 				System.out.println(tank.getLayoutX() +" "+tank.getTranslateX() +" "+tank.localToScene(getBoundsInLocal()) );
 				if(event.isControlDown()){
-					operator.interupt(player);
+					operator.interrupt(player);
 				}
 			}
 		});

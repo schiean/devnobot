@@ -61,7 +61,7 @@ public class GameEngine extends Application implements FireCallback, TankOperato
     private final AudioClip explosionSound = new AudioClip(GameEngine.class.getResource("shotgun_blast.wav").toString());
 
     private Level lvl;
-    private int preferedStepSize;
+    private int preferredStepSize;
 
     public GameEngine() {
         instance = this; // ugly hack to javafx 2.0 launcher
@@ -153,7 +153,7 @@ public class GameEngine extends Application implements FireCallback, TankOperato
 
         lvl = new Level(w, h, level);
 
-        preferedStepSize = lvl.getCharHeight();
+        preferredStepSize = lvl.getCharHeight();
 
         root.getChildren().add(lvl.node);
 
@@ -236,7 +236,7 @@ public class GameEngine extends Application implements FireCallback, TankOperato
     }
 
     @Override
-    public void interupt(final Player p) {
+    public void interrupt(final Player p) {
         killAndRespawn(p);
     }
 
@@ -270,9 +270,9 @@ public class GameEngine extends Application implements FireCallback, TankOperato
             boolean ok = true;
             int x2 = 30 + randomGenerator.nextInt(870);
             int y2 = 50 + randomGenerator.nextInt(600);
-            int x = x2 - (x2 % preferedStepSize);
-            int y = y2 - (y2 % preferedStepSize);
-            if (x % preferedStepSize != 0 || y % preferedStepSize != 0) {
+            int x = x2 - (x2 % preferredStepSize);
+            int y = y2 - (y2 % preferredStepSize);
+            if (x % preferredStepSize != 0 || y % preferredStepSize != 0) {
                 throw new RuntimeException("HHHHHHHHUHUHUH");
             }
             newTank = createTankAt(player, x, y);
@@ -321,7 +321,7 @@ public class GameEngine extends Application implements FireCallback, TankOperato
     }
 
     private Tank createTankAt(final Player p, final int x, final int y) {
-        final Tank t = new Tank(p, x, y, 0, preferedStepSize, this, this);
+        final Tank t = new Tank(p, x, y, 0, preferredStepSize, this, this);
         tanks.add(t);
         Platform.runLater(new Runnable() {
             @Override
