@@ -16,49 +16,57 @@
 package rest.service;
 
 import game.GameEngine;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.scene.Node;
+import javafx.scene.shape.Rectangle;
+import rest.service.types.GameObstacle;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Request;
-import javax.ws.rs.core.UriInfo;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
-import rest.service.types.GameObstacle;
-
+/**
+ * RESTful endpoints for URLs starting with <Context>/level/.
+ *
+ * @author Arjen van Schie
+ */
 @Path("/level")
 public class LevelResource {
 
-	@Context
-	private UriInfo uriInfo;
-	@Context
-	private Request request;
+    private static final Logger LOGGER = Logger.getLogger(LevelResource.class.getName());
 
-	private final Mapper mapper = new Mapper();
-	
-	private static Cache<List<GameObstacle>> lvlCache = new Cache<List<GameObstacle>>(60000); 
-	
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<GameObstacle> getLevel() {
-		synchronized (lvlCache) {
-			if(lvlCache.needsUpdate()){
-				List<GameObstacle> objs = new ArrayList<GameObstacle>();
-				for (Node n : GameEngine.instance.getWallNodes()) {
-					objs.add(mapper.createObstacle(n.getBoundsInParent()));
-				}		
-				lvlCache.set(objs);
-			}
-			return lvlCache.get();
-			
-		}
-		
-	}
+    private final Mapper mapper = new Mapper();
+
+    private static final int CACHE_SIZE = 60000;
+    private static Cache<List<GameObstacle>> lvlCache = new Cache<>(CACHE_SIZE);
+
+    /**
+     * RESTful endpoint for HTTP GET URL <Context>/level.
+     *
+     * @return List<GameObstacle>
+     */
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<GameObstacle> getLevel() {
+        synchronized (lvlCache) {
+            if (lvlCache.needsUpdate()) {
+                List<GameObstacle> obstacles = new ArrayList<GameObstacle>();
+                for (Node n : GameEngine.instance.getWallNodes()) {
+                    if (n instanceof Rectangle) {
+                        LOGGER.info("Ignoring Rectangle object from list of Nodes");
+                    } else {
+                        obstacles.add(mapper.createObstacle(n.getBoundsInParent()));
+                    }
+                }
+                lvlCache.set(obstacles);
+            }
+            return lvlCache.get();
+
+        }
+
+    }
 
 }
