@@ -2,13 +2,35 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>devnobots</groupId>
-        <artifactId>devnobots</artifactId>
+        <groupId>devnobot</groupId>
+        <artifactId>devnobot</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>battleclient</artifactId>
     <name>battleclient (JAR)</name>
     <packaging>jar</packaging>
+    <build>
+        <finalName>battleclient</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>client-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptorRefs>
+                                <descriptorRef>src</descriptorRef>
+                            </descriptorRefs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
     <dependencies>
         <dependency>
             <groupId>com.sun.jersey</groupId>
