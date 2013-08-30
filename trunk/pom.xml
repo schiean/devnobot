@@ -103,16 +103,24 @@
             </plugin>
         </plugins>
     </build>
-    <distributionManagement>
-        <repository>
-            <id>dcjava-releases</id>
-            <name>DCJava Releases Repository</name>
-            <url>${maven.repo.baseurl}/repositories/releases</url>
-        </repository>
-        <snapshotRepository>
-            <id>dcjava-snapshots</id>
-            <name>DCJava Snapshots Repository</name>
-            <url>${maven.repo.baseurl}/repositories/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
+    <profiles>
+        <profile>
+            <id>CGI</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <distributionManagement>
+                <repository>
+                    <id>dcjava-releases</id>
+                    <name>DCJava Releases Repository</name>
+                    <url>${maven.repo.baseurl}/repositories/releases</url>
+                </repository>
+                <snapshotRepository>
+                    <id>dcjava-snapshots</id>
+                    <name>DCJava Snapshots Repository</name>
+                    <url>${maven.repo.baseurl}/repositories/snapshots</url>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+    </profiles>
 </project>
