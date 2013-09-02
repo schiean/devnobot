@@ -1,1 +1,1 @@
-java -jar battleserver.jar
+java -jar battleserver.jar -Ddevnobot.server.portNumber=7080 -Ddevnobot.server.level=0
