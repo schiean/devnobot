@@ -22,24 +22,50 @@ import org.mortbay.jetty.servlet.ServletHolder;
 
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 
+import java.util.logging.Logger;
 
+/**
+ * This class starts a Jetty server.
+ *
+ * @author Arjen van Schie
+ */
 public class GameServer {
-	
-	private final int port;
-	
-	public GameServer(final int port){
-		this.port = port;
-	}
-	
-	public void start() throws Exception{
-		ServletHolder sh = new ServletHolder(ServletContainer.class);
-		sh.setInitParameter("com.sun.jersey.config.property.resourceConfigClass", "com.sun.jersey.api.core.PackagesResourceConfig");
-		sh.setInitParameter("com.sun.jersey.config.property.packages", "rest.service");
-		Server server = new Server(port);
-		
-		
-		final Context context = new Context(server, "/", Context.SESSIONS);
-		context.addServlet(sh, "/*");		 
-		server.start();
-	}
+
+    /**
+     * Port number to listen on.
+     */
+    private final int port;
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(GameServer.class.getName());
+
+    /**
+     * Specialised constructor.
+     *
+     * @param port -
+     */
+    public GameServer(final int port) {
+        this.port = port;
+    }
+
+    /**
+     * Starts a Jetty server instance.
+     */
+    public void start() {
+        ServletHolder sh = new ServletHolder(ServletContainer.class);
+        sh.setInitParameter("com.sun.jersey.config.property.resourceConfigClass", "com.sun.jersey.api.core.PackagesResourceConfig");
+        sh.setInitParameter("com.sun.jersey.config.property.packages", "rest.service");
+        Server server = new Server(port);
+
+
+        final Context context = new Context(server, "/", Context.SESSIONS);
+        context.addServlet(sh, "/*");
+        try {
+            server.start();
+        } catch (Exception ex) {
+            LOGGER.severe("Unable to start the Jetty server");
+            throw new IllegalStateException("Unable to start the Jetty server", ex);
+        }
+    }
 }
