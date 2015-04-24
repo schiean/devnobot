@@ -1,0 +1,1 @@
+Javafx 2.0 showcase with JSON REST interface to control tanks. The purpose is to host code-dojo events where 'pairs' create their own fighter algorithm.
